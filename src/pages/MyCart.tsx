@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Box from '@mui/material/Box';
@@ -103,8 +103,8 @@ const MyCart: React.FC<MyCartProps> = ({ cartProducts, fetchCartProducts }) => {
 
     try {
       // Send the updated quantity to the backend
-      await axios.post(
-        import.meta.env.VITE_Backend_Domain_URL + '/products/alterProductToCart',
+      await axiosInstance.post(
+        '/products/alterProductToCart',
         { productid, quantity: newQuantity },
         { withCredentials: true }
       );

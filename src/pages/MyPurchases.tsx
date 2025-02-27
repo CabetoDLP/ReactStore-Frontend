@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import { List, ListItem, Box, Typography, Divider, Container } from '@mui/material';
 import CartProductModal from '../components/CartProductModal';
 import theme from '../theme';
@@ -37,8 +37,8 @@ const MyPurchases: React.FC = () => {
   const fetchPurchasedProducts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get<{ purchasedProducts: PurchasedProduct[] }>(
-        import.meta.env.VITE_Backend_Domain_URL + '/purchases/showPurchasedProducts',
+      const response = await axiosInstance.get<{ purchasedProducts: PurchasedProduct[] }>(
+        '/purchases/showPurchasedProducts',
         { withCredentials: true }
       );
       setPurchasedProducts(response.data.purchasedProducts);

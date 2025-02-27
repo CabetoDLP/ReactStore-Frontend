@@ -11,7 +11,7 @@ import ProductCreationModal from './components/ProductCreationModal';
 import ProductsGrid, { BaseProduct } from './pages/MyProducts';
 import ProductSearch from './pages/ProductSearch';
 import MyCart from './pages/MyCart';
-import axios from 'axios';
+import axiosInstance from './api/axios';
 import MyPurchases from './pages/MyPurchases';
 import ChatView from './pages/Messages';
 import VerifyAccount from './pages/CodeVerity';
@@ -50,8 +50,8 @@ const App: React.FC = () => {
   // Function to fetch cart products
   const fetchCartProducts = async () => {
     try {
-      const response = await axios.get<{ cartProducts: CartProduct[] }>(
-        import.meta.env.VITE_Backend_Domain_URL + '/cart/showUserProducts',
+      const response = await axiosInstance.get<{ cartProducts: CartProduct[] }>(
+        '/cart/showUserProducts',
         { withCredentials: true }
       );
 
@@ -93,7 +93,7 @@ const App: React.FC = () => {
   // Function to handle product creation
   const handleCreateProduct = async (formData: FormData) => {
     try {
-      const response = await axios.post(import.meta.env.VITE_Backend_Domain_URL + '/products/create', formData, {
+      const response = await axiosInstance.post('/products/create', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true,
       });
@@ -109,7 +109,7 @@ const App: React.FC = () => {
   // Function to load user products
   const fetchUserProducts = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_Backend_Domain_URL + '/products/showUserProducts', {
+      const response = await axiosInstance.get('/products/showUserProducts', {
         withCredentials: true,
       });
       setProducts(response.data.product || []);
@@ -127,7 +127,7 @@ const App: React.FC = () => {
   // Function to handle the purchase modal
   const handlePurchase = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_Backend_Domain_URL + '/cart/buyProducts', {
+      const response = await axiosInstance.get('/cart/buyProducts', {
         withCredentials: true,
       });
       setPurchaseMessage('Purchase successful!'); // Set success message
@@ -202,6 +202,7 @@ const App: React.FC = () => {
           }}
         >
           <Routes>
+            <Route path="/" element={null} />
             <Route path="/login" element={<Login />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/userVerity" element={<VerifyAccount />} />

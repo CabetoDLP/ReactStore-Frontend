@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import {
   Box,
   Button,
@@ -81,11 +81,10 @@ const Signin: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(import.meta.env.VITE_Backend_Domain_URL + '/users/register', formData, {
+      const response = await axiosInstance.post('/users/register', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('Successful register: ' + response.data.message);
-      navigate('/marketplace');
     } catch (err: any) {
       setError(err.response?.data?.message || 'An error occurred while signing up.');
     }

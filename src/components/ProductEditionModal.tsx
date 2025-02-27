@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import {
   Dialog,
   DialogTitle,
@@ -44,8 +44,8 @@ const ProductEditionModal: React.FC<{ productId: string }> = ({ productId }) => 
   const fetchProductDetails = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_Backend_Domain_URL + '/products/showProduct',
+      const response = await axiosInstance.post(
+        '/products/showProduct',
         { productid: productId },
         { withCredentials: true }
       );
@@ -77,7 +77,7 @@ const ProductEditionModal: React.FC<{ productId: string }> = ({ productId }) => 
   // Function to fetch categories
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_Backend_Domain_URL + '/products/showCategories');
+      const response = await axiosInstance.get('/products/showCategories');
       setCategories(response.data.categories || []);
     } catch (err) {
       console.error('Error fetching categories:', err);
@@ -142,7 +142,7 @@ const ProductEditionModal: React.FC<{ productId: string }> = ({ productId }) => 
       });
 
       // Send the updated product data to the backend
-      const response = await axios.post(import.meta.env.VITE_Backend_Domain_URL + '/products/update', formDataToSend, {
+      const response = await axiosInstance.post('/products/update', formDataToSend, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true,
       });

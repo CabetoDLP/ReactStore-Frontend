@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import {
   Dialog,
   DialogTitle,
@@ -22,8 +22,8 @@ const DeleteCartProductButton: React.FC<{ productId: string; onDeleteSuccess?: (
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_Backend_Domain_URL + '/cart/deleteProduct',
+      const response = await axiosInstance.post(
+        '/cart/deleteProduct',
         { productid: productId },
         { withCredentials: true }
       );

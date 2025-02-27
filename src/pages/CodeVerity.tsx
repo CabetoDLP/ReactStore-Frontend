@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import {
   TextField,
   Button,
@@ -85,7 +85,7 @@ const CodeVerity: React.FC = () => {
     const code = digits.join('');
 
     try {
-      const response = await axios.post(import.meta.env.VITE_Backend_Domain_URL + '/users/verify', { email, code });
+      const response = await axiosInstance.post('/users/verify', { email, code });
       setMessage(response.data.message);
       setIsModalOpen(true); // Opens the modal to show the success message
     } catch (error: any) {

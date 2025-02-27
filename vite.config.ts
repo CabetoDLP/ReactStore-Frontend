@@ -7,5 +7,5 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true, // Limpia la carpeta dist antes de construir
-  },
+  }
 });

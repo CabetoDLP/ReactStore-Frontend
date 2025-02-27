@@ -10,7 +10,7 @@ import {
   Box,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import ProductModal from '../components/ProductModal';
 import theme from '../theme';
 
@@ -53,8 +53,8 @@ const ProductSearch = () => {
   const fetchProducts = async (filter: string) => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_Backend_Domain_URL + '/products/list',
+      const response = await axiosInstance.post(
+        '/products/list',
         { filter: filter },
         { withCredentials: true }
       );

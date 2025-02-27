@@ -9,7 +9,7 @@ import {
 
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import { useEffect, useState } from 'react';
 import ProductOptions from './ProductModalOptions';
 
@@ -42,8 +42,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ productId, open, onClose })
     setError(null);
 
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_Backend_Domain_URL + '/products/showProduct',
+      const response = await axiosInstance.post(
+        '/products/showProduct',
         { productid: productId },
         { withCredentials: true }
       );

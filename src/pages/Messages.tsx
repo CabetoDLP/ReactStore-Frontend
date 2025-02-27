@@ -16,7 +16,7 @@ import {
 import { useLocation } from 'react-router-dom';
 import React from 'react';
 
-const SOCKET_SERVER_URL = import.meta.env.VITE_Backend_Domain_URL + '';
+const SOCKET_SERVER_URL = 'https://react-store.azurewebsites.net';
 
 const Messages = () => {
   const location = useLocation();

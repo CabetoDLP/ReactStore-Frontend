@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -30,8 +30,8 @@ const ProductOptions: React.FC<{ productId: string; stock: number }> = ({ produc
     setError(null);
     setSuccess(null);
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_Backend_Domain_URL + '/products/alterProductToCart',
+      const response = await axiosInstance.post(
+        '/products/alterProductToCart',
         { productid: productId, quantity },
         { withCredentials: true }
       );

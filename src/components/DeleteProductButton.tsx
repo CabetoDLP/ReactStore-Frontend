@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import {
   Dialog,
   DialogTitle,
@@ -20,8 +20,8 @@ const DeleteProductButton: React.FC<{ productId: string; onDeleteSuccess?: () =>
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_Backend_Domain_URL + '/products/delete',
+      const response = await axiosInstance.post(
+        '/products/delete',
         { productid: productId },
         { withCredentials: true }
       );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import {
   Box,
   Button,
@@ -42,8 +42,8 @@ const Login: React.FC = () => {
   
     try {
       // Sends data to backend using axios
-      await axios.post(
-        import.meta.env.VITE_Backend_Domain_URL + '/users/login',
+      await axiosInstance.post(
+        '/users/login',
         {
           email: formValues.email,
           password: formValues.password,
@@ -52,7 +52,7 @@ const Login: React.FC = () => {
       );
   
       // If login is successful
-      navigate('/marketplace'); // Redirects to marketplace
+      navigate('/'); // Redirects to marketplace
     } catch (err: any) {
       // Specific error handling
       if (err.response?.status === 401) {

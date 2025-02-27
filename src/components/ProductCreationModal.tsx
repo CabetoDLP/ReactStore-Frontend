@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import {
   Dialog,
   DialogTitle,
@@ -52,8 +52,8 @@ const ProductCreationModal: React.FC<ProductCreationModalProps> = ({
   const [categories, setCategories] = useState<{ categoryid: number; category: string }[]>([]);
 
   React.useEffect(() => {
-    axios
-      .get(import.meta.env.VITE_Backend_Domain_URL + '/products/showCategories')
+    axiosInstance
+      .get('/products/showCategories')
       .then((response) => {
         setCategories(response.data.categories || []);
       })
