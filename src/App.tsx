@@ -64,7 +64,7 @@ const App: React.FC = () => {
       if (err.response && err.response.status === 204) {
         setCartProducts([]);
       }
-      if (err.response?.status === 401) {
+      if (err.response?.status === 401 && location.pathname !== '/userVerity') {
         console.error('Unauthorized, redirecting to login');
         navigate('/login');
       } else {
@@ -114,7 +114,7 @@ const App: React.FC = () => {
       });
       setProducts(response.data.product || []);
     } catch (err: any) {
-      if (err.response?.status === 401) {
+      if (err.response?.status === 401 && location.pathname !== '/userVerity') {
         console.error('Unauthorized, redirecting to login');
         navigate('/login');
       } else {
