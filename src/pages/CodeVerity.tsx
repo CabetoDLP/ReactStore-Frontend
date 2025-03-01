@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom'; // Importa useNavigate
 import axiosInstance from '../api/axios';
 import {
   TextField,
@@ -15,23 +15,19 @@ import {
 } from '@mui/material';
 
 const CodeVerity: React.FC = () => {
-  // Gets query string from URL
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const email = searchParams.get('email'); // Extracts the email
-
-  // State of verification code digits
+  const email = searchParams.get('email');
   const [digits, setDigits] = useState<string[]>(Array(6).fill(''));
   const [message, setMessage] = useState<string>('');
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // State for controlling the modal
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const navigate = useNavigate(); // Inicializa useNavigate
 
-  // Handles the cnages in each digit
   const handleDigitChange = (index: number, value: string) => {
     const newDigits = [...digits];
     newDigits[index] = value;
     setDigits(newDigits);
 
-    // Changes digit position if recives one
     if (value && index < 5) {
       const nextInput = document.getElementById(`digit-${index + 1}`);
       if (nextInput) {
@@ -40,10 +36,8 @@ const CodeVerity: React.FC = () => {
     }
   };
 
-  // Handles backspace key
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
     if (e.key === 'Backspace' && !digits[index] && index > 0) {
-      // If space is empty and backspace is pressed, moves the digit position to the previous one
       const prevInput = document.getElementById(`digit-${index - 1}`);
       if (prevInput) {
         prevInput.focus();
@@ -51,50 +45,51 @@ const CodeVerity: React.FC = () => {
     }
   };
 
-  // Handles pasting the code
   const handlePaste = (e: React.ClipboardEvent) => {
-    e.preventDefault(); // Avoids the default behavior for pasting
-    const pastedText = e.clipboardData.getData('text'); // gets the pasted text
+    e.preventDefault();
+    const pastedText = e.clipboardData.getData('text');
 
-    // Verifies if the pasted text contains exactly 6 digits 
     if (pastedText.length === 6) {
-      const newDigits = pastedText.split(''); // Divides the chain in characters
-      setDigits(newDigits); // Updates the state with the new digits
+      const newDigits = pastedText.split('');
+      setDigits(newDigits);
 
-      // Moves the
       const lastInput = document.getElementById(`digit-5`);
       if (lastInput) {
         lastInput.focus();
       }
     } else {
-      setMessage('El código debe tener exactamente 6 caracteres.');
+      setMessage('The verification code must have 6 characters.');
     }
   };
 
-  // Submits the form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email) {
       setMessage('Email is missing in the URL.');
-      setIsModalOpen(true); // Opens the modal to show the error message
+      setIsModalOpen(true);
       return;
     }
 
-    // Unites the digits to create the completed code
     const code = digits.join('');
 
     try {
       const response = await axiosInstance.post('/users/verify', { email, code });
       setMessage(response.data.message);
-      setIsModalOpen(true); // Opens the modal to show the success message
+      setIsModalOpen(true);
+
+      // Si la verificación es exitosa, redirige al usuario a /login
+      if (response.status === 200) {
+        setTimeout(() => {
+          navigate('/login'); // Redirige después de mostrar el mensaje
+        }, 2000); // Espera 2 segundos antes de redirigir
+      }
     } catch (error: any) {
       setMessage(error.response?.data?.message || 'Error verifying account');
-      setIsModalOpen(true); // Opens the modal to show the error message
+      setIsModalOpen(true);
     }
   };
 
-  // Cerrar el modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
@@ -114,13 +109,13 @@ const CodeVerity: React.FC = () => {
                 variant="outlined"
                 margin="normal"
                 inputProps={{
-                  maxLength: 1, // Only alows one character
-                  style: { textAlign: 'center' }, // Aligns center the text
+                  maxLength: 1,
+                  style: { textAlign: 'center' },
                 }}
                 value={digit}
                 onChange={(e) => handleDigitChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(index, e)} // Hanles backspace key
-                onPaste={index === 0 ? handlePaste : undefined} // Handles the paste option only at the first position
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                onPaste={index === 0 ? handlePaste : undefined}
                 required
               />
             ))}
@@ -136,7 +131,7 @@ const CodeVerity: React.FC = () => {
         </Box>
       </Box>
 
-      {/* Modal for show the success or error message */}
+      {/* Modal para mostrar el mensaje de éxito o error */}
       <Dialog open={isModalOpen} onClose={handleCloseModal}>
         <DialogTitle>Verification Result</DialogTitle>
         <DialogContent>
