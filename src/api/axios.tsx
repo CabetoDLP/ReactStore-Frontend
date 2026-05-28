@@ -8,6 +8,7 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
     "Access-Control-Allow-Origin": "*"
   },
+  withCredentials: true
 });
 
 // Interceptor para manejar errores globalmente
