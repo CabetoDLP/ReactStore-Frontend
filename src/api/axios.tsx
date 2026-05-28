@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://reactstore-backend.onrender.com'; //https://react-store.azurewebsites.net  http://localhost:5000 
+const BASE_URL = 'https://reactstore-backend-03yh.onrender.com'; //https://react-store.azurewebsites.net  http://localhost:5000 
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
